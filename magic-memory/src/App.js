@@ -16,6 +16,7 @@ function App() {
   const [turns, setTurns] = useState(0)
   const [choiceOne, setChoiceOne] = useState(null)
   const [choiceTwo, setChoiceTwo] = useState(null)
+  const [disabled, setDisabled] = useState(false)
 
   // shuffle cards for new game
   const shuffleCards = () => {
@@ -33,6 +34,7 @@ function App() {
 
   useEffect(() => {
     if(choiceOne && choiceTwo) {
+      setDisabled(true)
 
       if(choiceOne.src === choiceTwo.src){
         setCards(prevCards => {
@@ -50,17 +52,17 @@ function App() {
       }
     }
   }, [choiceOne, choiceTwo]);
-  console.log(cards);
 
   const resetTurn = () => {
     setChoiceOne(null)
     setChoiceTwo(null)
     setTurns(prevTurns => prevTurns + 1)
+    setDisabled(false)
   }
 
   return (
     <div className="App">
-      <h1>Magic Match</h1>
+      <h1>Eureka Game</h1>
       <button onClick={shuffleCards}>New Game</button>
 
       <div className="card-grid">
@@ -70,6 +72,7 @@ function App() {
           card={card}
           handleChoice={handleChoice}
           flipped={card === choiceOne || card === choiceTwo || card.matched}
+          disabled={disabled}
           />
         ))}
       </div>
